@@ -1,0 +1,95 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0"
+                 servicepoint="pseudowire2">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+<!--________________Attachment Circuit 1____________-->
+    <device>
+      <name>{/AttachmentCircuit1/device-name}</name>
+      <config>
+      <interface xmlns="urn:ios">
+      <GigabitEthernet>
+        <name>{/AttachmentCircuit1/ifname</name>
+          <service>
+          <instance>
+            <id>{/AttachmentCircuit1/svc-inst-id}</id>
+            <ethernet/>
+            <encapsulation>
+              <dot1q>
+                <id>{/AttachmentCircuit1/s-vlan}</id>
+                <second-dot1q>{/AttachmentCircuit1/c-vlan}</second-dot1q>
+              </dot1q>
+            </encapsulation>
+            <rewrite>
+              <ingress>
+                <tag when="{not(/AttachmentCircuit1/c-vlan) }">
+                  <pop>1</pop>
+                  <mode>symmetric</mode>
+                </tag>
+                <tag when="{(/AttachmentCircuit1/c-vlan) }">
+                  <pop>2</pop>
+                  <mode>symmetric</mode>
+                </tag>
+              </ingress>
+            </rewrite>
+            <service-policy>
+              <output>
+                <name>{/AttachmentCircuit1/pmap}</name>
+              </output>
+            </service-policy>
+            <xconnect>
+              <address>{/../../ncs:devices/ncs:device[ncs:name=current()/../AttachmentCircuit2/device-name]/ncs:config/ios:interface/ios:Loopback[ios:name='0']/ios:ip/ios:address/ios:primary/ios:address}</address>
+              <vcid>{/vcid</vcid>
+              <encapsulation>mpls</encapsulation>
+            </xconnect>
+          </instance>
+          </service>
+      </GigabitEthernet>
+      </interface>
+      </config>
+    </device>
+<!--________________Attachment Circuit 2____________-->
+    <device>
+      <name>{/AttachmentCircuit2/device-name}</name>
+      <config>
+      <interface xmlns="urn:ios">
+      <GigabitEthernet>
+        <name>{/AttachmentCircuit2/ifname</name>
+          <service>
+          <instance>
+            <id>{/AttachmentCircuit2/svc-inst-id}</id>
+            <ethernet/>
+            <encapsulation>
+              <dot1q>
+                <id>{/AttachmentCircuit2/s-vlan}</id>
+                <second-dot1q>{/AttachmentCircuit1/c-vlan}</second-dot1q>
+              </dot1q>
+            </encapsulation>
+            <rewrite>
+              <ingress>
+               <tag when="{not(/AttachmentCircuit1/c-vlan) }">
+                  <pop>1</pop>
+                  <mode>symmetric</mode>
+                </tag>
+                <tag when="{(/AttachmentCircuit1/c-vlan) }">
+                  <pop>2</pop>
+                  <mode>symmetric</mode>
+                </tag> 
+              </ingress>
+            </rewrite>
+            <service-policy>
+              <output>
+                <name>{/AttachmentCircuit2/pmap}</name>
+              </output>
+            </service-policy>
+            <xconnect>
+              <address>{/../../ncs:devices/ncs:device[ncs:name=current()/../AttachmentCircuit1/device-name]/ncs:config/ios:interface/ios:Loopback[ios:name='0']/ios:ip/ios:address/ios:primary/ios:address}</address>
+              <vcid>{/vcid</vcid>
+              <encapsulation>mpls</encapsulation>
+            </xconnect>
+          </instance>
+          </service>
+      </GigabitEthernet>
+      </interface>
+      </config>
+    </device>
+  </devices>
+</config-template>

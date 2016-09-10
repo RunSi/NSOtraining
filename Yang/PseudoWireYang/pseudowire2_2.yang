@@ -1,0 +1,85 @@
+module pseudowire2 {
+	namespace "http://com/example1/pseudowire2";
+	prefix pseudowire2;
+	import ietf-inet-types {
+		prefix inet;
+	}
+	import tailf-ncs {
+		prefix ncs;
+	}
+	import tailf-common {
+		prefix tailf;
+	}
+	grouping EVC {
+		leaf device-name {
+			mandatory true;
+			type leafref {
+				path "/ncs:devices/ncs:device/ncs:name";
+			}
+		}
+		leaf ifname {
+			mandatory true;
+			type string;
+			tailf:info "<GE-Interface> GE IF Number, ej 0 or 0/0 etc";
+		}
+		leaf svc-inst-id {
+			mandatory true;
+			type uint16 {
+				range "2000..2999";
+				tailf:info "<2000..2999> Service Instance Id";
+			}
+		}
+		leaf s-vlan {
+			mandatory true;
+			type uint16 {
+				range "1000..1999";
+				tailf:info "<1000..1999>  Service VLAN Id";
+			}
+		}
+		leaf c-vlan {
+			mandatory false;
+			type uint16 {
+				range "1..4096";
+				tailf:info "<1..4096> Customer VLAN Id";
+			}
+		}
+		leaf pmap {
+			mandatory false;
+			type enumeration {
+				enum Silver;
+				enum Gold;
+			}
+		}
+	}
+	augment /ncs:services {
+		list pw2 {
+			key name;
+			uses ncs:service-data;
+			ncs:servicepoint "pseudowire2";
+			tailf:info "Pseudowire Service";
+
+			leaf name {
+				type string;
+			tailf:info "<String> Pseudowire Name";
+			}
+			leaf vcid {
+				mandatory true;
+				type uint32 {
+					range "16..4294967295";
+					tailf:info "<16..2^32-1> Pseudowire Circuit Id";
+				}
+			}
+			
+			list AttachmentCircuit1 {
+				key "device-name";
+				uses EVC;
+				tailf:info "<Device Name> PE for Attachment Circuit 1";
+			}
+			list AttachmentCircuit2 {
+				key "device-name";
+				uses EVC;
+				tailf:info "<Device Name> PE for Attachment Circuit 2";
+			}
+		}
+	}
+}
