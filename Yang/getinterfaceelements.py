@@ -15,6 +15,8 @@ from ncclient import manager
 from ncclient.operations import RPCError
 import sys
 
+count = 0
+
 payload = """
 <filter xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
 <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
@@ -25,6 +27,8 @@ payload = """
 """
 
 if __name__ == '__main__':
+
+
 
     parser = ArgumentParser(description='Usage:')
 
@@ -37,6 +41,8 @@ if __name__ == '__main__':
                         help="Device Password (netconf agent password)")
     parser.add_argument('--port', type=int, default=830,
                         help="Netconf agent port")
+    parser.add_argument('--node', type=str,
+    					help="xml element from tree to display")
     args = parser.parse_args()
 
     # connect to netconf agent
@@ -57,8 +63,19 @@ if __name__ == '__main__':
 
         # beautify output
         #print(ET.tostring(data, pretty_print=True))
+		
+		
+	if args.node is not None:
+		for node in data.findall(args.node):
+        		print node.text
+        		
+	else:
+        	print ("no namespace and element defined")
+    
+    
 
-        for node in data.findall('.//{urn:ietf:params:xml:ns:yang:ietf-ip}ip'):
-            print node.text
+#'.//{urn:ietf:params:xml:ns:yang:ietf-ip}ip'
 
 
+#note need to test for args.node before connecting to device, otherwise connection
+#is superflous

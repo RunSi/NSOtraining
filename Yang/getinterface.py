@@ -37,6 +37,7 @@ if __name__ == '__main__':
                         help="Device Password (netconf agent password)")
     parser.add_argument('--port', type=int, default=830,
                         help="Netconf agent port")
+   
     args = parser.parse_args()
 
     # connect to netconf agent

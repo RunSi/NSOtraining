@@ -2,4 +2,29 @@
 
 Files include the following in this directory.
 
+get_capabilities.py 	a script to demonstrate NetConf interchange. Will display NetConf
+						capabilities and supported YANG models on interrogated device
+					
+get_hostname.py			a simple script that will use NetConf to retrieve hostname from 
+						device.
+						
+get_ietf_interfaces.py  another simple script that will retrieve schema through get_schema
+						and save to file with yang extension
+						
+get_interfaces.config.py
+						retrieves data from the ietf_interfaces.yang model from the
+						running config of the device. Displays xml using minidom.
+						uses get_interfaces.xml as filter.
+						
+getinterfaces.py		achieves the same ends as above, but displays xml using lxml.
+						Also uses Argparser to take on arguments from the command line.
+						
+getinterfaceelements.py
+						building on the above file this script will display node data
+						for elements identified on the command line
+						
+
+						
+enabledinterfaces.py
+
 
