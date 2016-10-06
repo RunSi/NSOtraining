@@ -11,13 +11,13 @@ def main():
     """
     HOSTNAME = ''
     NXOS_HOSTNAME_REGEX = '^hostname (.*)$'
-    NXOS_DOMAIN_REGEX = '^ip domain-name (.*)$'
-    with open('sandbox-nexus9kv-config.txt', 'r') as nexus_config:
-        for line in nexus_config:
+    #NXOS_DOMAIN_REGEX = '^ip domain-name (.*)$'
+    with open('sandbox-nexus9kv-config.txt', 'r') as nexus_conf:
+        for line in nexus_conf:
             if re.match(NXOS_HOSTNAME_REGEX, line):
-                HOSTNAME = re.search(NXOS_HOSTNAME_REGEX, line).group(1) + '.'
-            elif re.match(NXOS_DOMAIN_REGEX, line):
-                HOSTNAME += re.search(NXOS_DOMAIN_REGEX, line).group(1)
+                HOSTNAME = re.search(NXOS_HOSTNAME_REGEX, line).group(1) #+ '.'
+           # elif re.match(NXOS_DOMAIN_REGEX, line):
+            #    HOSTNAME += re.search(NXOS_DOMAIN_REGEX, line).group(1)
 
     print(HOSTNAME)
 

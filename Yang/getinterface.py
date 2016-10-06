@@ -1,6 +1,7 @@
 """
     Original
     Netconf python example by yang-explorer (https://github.com/CiscoDevNet/yang-explorer)
+    
     Modified
     S. Hart
 
@@ -52,12 +53,14 @@ if __name__ == '__main__':
         # execute netconf operation
         try:
             response = m.get(payload).xml
-            data = ET.fromstring(response)
+            myxml = response.encode('UTF-8')
+            data = ET.fromstring(myxml)
         except RPCError as e:
             data = e._raw
 
         # beautify output
-        print(ET.tostring(data, pretty_print=True))
+        #print(ET.tostring(data, pretty_print=True))
+        print(ET.tounicode(data, pretty_print=True))
         #for node in data.findall('.//{urn:ietf:params:xml:ns:yang:ietf-interfaces}description'):
             #print node.text
 
@@ -66,7 +69,7 @@ if __name__ == '__main__':
         #If you wish to save the returned xml to file uncomment the below
 
         #text_file = open("testfoo.xml", "w")
-        #text_file.write(ET.tostring(data, pretty_print=True))
+        #text_file.write(ET.tounicode(data, pretty_print=True))
         #text_file.close()
 
 

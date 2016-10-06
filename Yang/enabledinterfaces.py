@@ -5,7 +5,7 @@
     S. Hart
 
     Running script: (save as example.py)
-    > python getinterfaceelements.py -a 64.103.37.51 -u root -p C\!sc0123 --port 10000
+    > python enabledinterfaces.py -a 64.103.37.51 -u root -p C\!sc0123 --port 10000
     need to hash out the ! with \
 """
 
@@ -56,7 +56,8 @@ if __name__ == '__main__':
         # execute netconf operation
         try:
             response = m.get(payload).xml
-            data = ET.fromstring(response)
+            myxml = response.encode('UTF-8')
+            data = ET.fromstring(myxml)
         except RPCError as e:
             data = e._raw
 
@@ -65,10 +66,10 @@ if __name__ == '__main__':
 		
 		
 	
-	for node in data.findall('.//{urn:ietf:params:xml:ns:yang:ietf-interfaces}enabled'):
+    for node in data.findall('.//{urn:ietf:params:xml:ns:yang:ietf-interfaces}enabled'):
         			#print node.text
         			count +=1
-    print 'There are', count, 'enabled interfaces'
+    print ('\n\nThere are', count, 'enabled interfaces\n\n')
 	
     
     

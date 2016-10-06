@@ -57,7 +57,8 @@ if __name__ == '__main__':
         # execute netconf operation
         try:
             response = m.get(payload).xml
-            data = ET.fromstring(response)
+            myxml = response.encode('UTF-8')
+            data = ET.fromstring(myxml)
         except RPCError as e:
             data = e._raw
 
@@ -65,11 +66,11 @@ if __name__ == '__main__':
         #print(ET.tostring(data, pretty_print=True))
 		
 		
-	if args.node is not None:
-		for node in data.findall(args.node):
-        		print node.text
+        if args.node is not None:
+		        for node in data.findall(args.node):
+        	            print (node.text)
         		
-	else:
+        else:
         	print ("no namespace and element defined")
     
     
